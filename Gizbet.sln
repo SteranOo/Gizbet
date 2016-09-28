@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gizbet.DAL", "Gizbet.DAL\Gizbet.DAL.csproj", "{C54B66C0-48D6-46F0-A17C-1CCFF84436E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gizbet.BLL", "Gizbet.BLL\Gizbet.BLL.csproj", "{F958D5B1-5204-4371-A50D-9500E7046770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gizbet.WEB", "Gizbet.WEB\Gizbet.WEB.csproj", "{150EE4B2-09FD-4100-BD6C-B97578960E66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C54B66C0-48D6-46F0-A17C-1CCFF84436E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C54B66C0-48D6-46F0-A17C-1CCFF84436E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C54B66C0-48D6-46F0-A17C-1CCFF84436E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C54B66C0-48D6-46F0-A17C-1CCFF84436E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F958D5B1-5204-4371-A50D-9500E7046770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F958D5B1-5204-4371-A50D-9500E7046770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F958D5B1-5204-4371-A50D-9500E7046770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F958D5B1-5204-4371-A50D-9500E7046770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{150EE4B2-09FD-4100-BD6C-B97578960E66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{150EE4B2-09FD-4100-BD6C-B97578960E66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{150EE4B2-09FD-4100-BD6C-B97578960E66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{150EE4B2-09FD-4100-BD6C-B97578960E66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

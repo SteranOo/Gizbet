@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Gizbet.WEB.Models.CategoryModel>
+
+<div class="col-sm-3 sidenav">
+    <div class="list-group">
+        @foreach (var category in Model)
+        {
+            @Html.ActionLink(category.Name, "Category", new { id = category.Id }, new { @class = "category list-group-item" })
+        }
+    </div>
+</div>

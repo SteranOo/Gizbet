@@ -1,0 +1,8 @@
+﻿@model Gizbet.WEB.Models.ApplicationUserPublicModel
+
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">Мои лоты</h3></div>
+
+@foreach (var lot in Model.Lots)
+{
+    @Html.Partial("ShortLotInfo", lot)
+}

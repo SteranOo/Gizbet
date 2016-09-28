@@ -1,0 +1,9 @@
+﻿@model Gizbet.WEB.Models.CategoryModel
+
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">@Model.Name</h3></div>
+
+@foreach (var lot in Model.Lots.Where(l=>!l.IsSold))
+{
+    @Html.Partial("ShortLotInfo", lot)
+}
+

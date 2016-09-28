@@ -1,0 +1,99 @@
+﻿/*!
+ * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    background-color: white;
+    background-color: rgba(150,150,150,0.2);
+    margin-bottom: 100px;
+}
+
+#footer {
+  
+  position: absolute;
+  bottom: 0;
+
+    right: 0;
+    width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 50px;
+  
+  background-color: #222;
+}
+
+.slide-image {
+    width: 100%;
+}
+
+.carousel-holder {
+    margin-bottom: 30px;
+}
+
+.carousel-control,
+.item {
+    border-radius: 4px;
+}
+
+.caption {
+    height: 130px;
+    overflow: hidden;
+}
+
+.caption h4 {
+    white-space: nowrap;
+}
+
+.shortLotImg {
+    width: 240px !important; 
+    height: 160px !important; 
+    margin-top: 5px;
+}
+
+.thumbnail {
+    padding: 0;
+}
+
+.lotImg {
+    width: 480px;
+    height: 300px;
+    padding: 30px;
+    padding-top: 20px;
+}
+
+.thumbnail .caption-full {
+    padding: 9px;
+    color: #222;
+}
+
+
+.shortLot:hover {
+    background-color: #222;
+}
+
+.shortLot a {
+    text-decoration: none;
+    color:  #222;
+}
+
+.shortLot a:hover{
+    text-decoration: none;
+    color: lightgray;
+}
+
+.category {
+    text-align: center;    
+}
+
+ .category:hover  {
+     background-color: #222 !important; 
+     color: lightgray !important;
+}

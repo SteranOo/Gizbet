@@ -1,0 +1,205 @@
+﻿@model Gizbet.WEB.Models.LotPublicModel
+
+<div class="col-sm-10" style="background-color: #fff">
+
+    <div align="center">
+        <img class="lotImg" src="~/Content/Images/UserImages/@Model.ImageName" alt="@Model.ImageName"/>
+    </div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOfPosting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeOfPosting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoursDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoursDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialPrice)
+        </dt>
+
+        <dd>
+            &#8372;@Html.DisplayFor(model => model.InitialPrice)
+        </dd>
+
+        @if (Model.IsSelling)
+        {
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SellingPrice)
+            </dt>
+
+            <dd>
+                &#8372;@Html.DisplayFor(model => model.SellingPrice)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Step)
+        </dt>
+
+        <dd>
+            &#8372;@Html.DisplayFor(model => model.Step)
+        </dd>
+
+        @if (Model.TopBid != null)
+        {
+            <dt>
+                Текущая ставка
+            </dt>
+
+            <dd>
+                &#8372;@Html.DisplayFor(model => model.TopBid.Amount)&#160;&#160;&#160;
+                Пользователь: @Html.ActionLink(Model.TopBid.ApplicationUser.UserName, "ProfilePage", "Account", new {userName = Model.TopBid.ApplicationUser.UserName }, null)
+            </dd>
+        }
+
+    </dl>
+
+    <div align="center">
+        <h4 style="margin-left: 5px; margin-right: 5px" id="label_@Model.Id">До окончания:</h4>
+        <h2 style="margin-left: 5px; margin-right: 5px" id="time_@Model.Id"></h2>
+        <h6 id="extra_@Model.Id">
+            Дней &#160; &#160;
+            Часов &#160; &#160;
+            Минут &#160; &#160;
+            Секунд &#160; &#160;
+        </h6>
+
+       
+    </div>
+
+    @if (!Model.Owner.UserName.Equals(User.Identity.Name) && !User.IsInRole("Administrator"))
+    {
+        if (Model.TopBid != null && Model.TopBid.ApplicationUser.UserName.Equals(User.Identity.Name))
+        {
+        }
+        else
+        {
+            <div align="center" style="padding: 10px">
+
+                <form method="post" action="@Url.Action("MakeBid", new {lotId = Model.Id})">
+                    <input type="submit" style="font-size: 16px;" class="btn btn-success" value="Сделать ставку ( &#8372;@((Model.TopBid?.Amount ?? Model.InitialPrice) + Model.Step) )"/>
+                </form>
+            </div>
+        }
+
+        <div align="center" style="padding-bottom: 20px">
+
+            @if (Model.IsSelling)
+            {
+
+                <form method="post" action="@Url.Action("Buy", new {lotId = Model.Id})">
+                    <input type="submit" style="font-size: 16px" class="btn btn-info" value="Выкупить &#8372;@Html.DisplayFor(model => model.SellingPrice)"/>
+                </form>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div align="center" style="padding-top: 10px; padding-bottom: 20px">
+            <form method="post" action="@Url.Action("DeleteLot", new {lotId = Model.Id})">
+                <input type="submit" onclick ="return confirm('Вы точно хотите удалить лот?')" style="font-size: 16px;" class="btn btn-danger" value="Удалить лот"/>
+            </form>
+        </div>
+    }
+</div>
+
+@section scripts
+{
+<script>
+            var update = function() {
+
+                var date1 = new Date();
+                date1 = new Date(date1.getTime() - date1.getTimezoneOffset() * 60000);
+
+                var date2 = new
+                    Date(@Model.TimeOfPosting.AddHours(Model.HoursDuration).Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds);
+
+                var diff = date2.getTime() - date1.getTime();
+
+                var res;
+
+                if (diff <= 0) {
+                    res = "Окончен";
+                    document.getElementById("label_@Model.Id").innerHTML = "";
+                    document.getElementById("extra_@Model.Id").innerHTML = "";
+                    clearInterval(timer);
+                } else {
+                    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    diff -= days * (1000 * 60 * 60 * 24);
+
+                    var hours = Math.floor(diff / (1000 * 60 * 60));
+                    diff -= hours * (1000 * 60 * 60);
+
+                    var mins = Math.floor(diff / (1000 * 60));
+                    diff -= mins * (1000 * 60);
+
+                    var seconds = Math.floor(diff / (1000));
+
+                    res = days + " : " + hours + " : " + mins + " : " + seconds;
+                }
+
+                document.getElementById("time_@Model.Id").innerHTML = res;
+            }
+
+            update();
+            var timer = setInterval(update, 1000);
+</script>
+
+    @*<script>
+          $( function() {
+            $( "#dialog-confirm" ).dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Delete all items": function() {
+                        $( this ).dialog( "close" );
+                    },
+                    Cancel: function() {
+                        $( this ).dialog( "close" );
+                    }
+                }
+            });
+        } );
+    </script>
+
+    <div id="dialog-confirm" title="Empty the recycle bin?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+    </div>*@
+}

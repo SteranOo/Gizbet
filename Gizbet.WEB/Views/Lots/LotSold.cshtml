@@ -1,0 +1,94 @@
+﻿@model Gizbet.WEB.Models.LotPublicModel
+
+<div class="col-sm-10" style="background-color: #fff">
+
+    <div align="center">
+        <img class="lotImg" src="~/Content/Images/UserImages/@Model.ImageName" alt="@Model.ImageName" />
+    </div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Owner)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Owner.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOfPosting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeOfPosting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HoursDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HoursDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialPrice)
+        </dt>
+
+        <dd>
+            &#8372;@Html.DisplayFor(model => model.InitialPrice)
+        </dd>
+
+        @if (Model.IsSelling)
+        {
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SellingPrice)
+            </dt>
+
+            <dd>
+                &#8372;@Html.DisplayFor(model => model.SellingPrice)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Step)
+        </dt>
+
+        <dd>
+            &#8372;@Html.DisplayFor(model => model.Step)
+        </dd>
+    </dl>
+
+    <div>
+        @if (Model.TopBid == null)
+        {
+            <div class="alert alert-warning"> Лот не продан</div>
+        }
+        else
+        {
+            <div class="alert alert-success">
+                Лот продан пользователю
+                @Html.ActionLink(Model.TopBid.ApplicationUser.UserName, "ProfilePage", "Account", new { userName = Model.TopBid.ApplicationUser.UserName }, null)
+                за &#8372;@Model.TopBid.Amount
+            </div>
+        }
+    </div>
+</div>
+
+

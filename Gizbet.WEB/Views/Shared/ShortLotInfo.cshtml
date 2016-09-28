@@ -1,0 +1,75 @@
+﻿@model Gizbet.WEB.Models.LotPublicModel
+
+<div class="col-lg-4">
+    <div class="thumbnail shortLot" align="center" style="padding: 0">
+        <a href="@Url.Action("Lot", "Lots", new {id = Model.Id})">
+            <img class="shortLotImg" src="~/Content/Images/UserImages/@Model.ImageName" alt="@Model.ImageName" />
+
+            <h5 style="margin-left: 5px;">
+                @Model.Name
+            </h5>
+
+            <h5 style="margin-left: 5px; margin-right: 5px">Ставка: &#8372;@(Model.TopBid?.Amount ?? Model.InitialPrice)</h5>
+            <h5 style="margin-left: 5px; margin-right: 5px">Выкуп: &#8372;@(Model.IsSelling ? Model.SellingPrice.ToString() : "Нет")</h5>
+
+            <div align="center">
+                @if (Model.IsSold)
+                {
+                    <h2 style="margin-left: 5px; margin-right: 5px">Окончен</h2>
+                }
+                else
+                {
+                    <h5 style="margin-left: 5px; margin-right: 5px" id="label_@Model.Id">До окончания:</h5>
+                    <h2 style="margin-left: 5px; margin-right: 5px" id="time_@Model.Id"></h2>
+                    <h6 id="extra_@Model.Id">
+                        Дней &#160; &#160;
+                        Часов &#160; &#160;
+                        Минут &#160; &#160;
+                        Секунд &#160; &#160;
+                    </h6>
+                    <script>
+                        var update = function () {
+
+                            var date1 = new Date();
+                            date1 = new Date(date1.getTime() - date1.getTimezoneOffset() * 60000);
+
+                            var date2 = new
+                                Date(@Model.TimeOfPosting.AddHours(Model.HoursDuration).Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds);
+
+                            var diff = date2.getTime() - date1.getTime();
+
+                            var res;
+
+                            if (diff <= 0) {
+                                res = "Окончен";
+                                document.getElementById("label_@Model.Id").innerHTML = "";
+                                document.getElementById("extra_@Model.Id").innerHTML = "";
+                                clearInterval(timer);
+                            } else {
+                                var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                diff -= days * (1000 * 60 * 60 * 24);
+
+                                var hours = Math.floor(diff / (1000 * 60 * 60));
+                                diff -= hours * (1000 * 60 * 60);
+
+                                var mins = Math.floor(diff / (1000 * 60));
+                                diff -= mins * (1000 * 60);
+
+                                var seconds = Math.floor(diff / (1000));
+
+                                res = days + " : " + hours + " : " + mins + " : " + seconds;
+                            }
+
+                            document.getElementById("time_@Model.Id").innerHTML = res;
+                        }
+
+                        update();
+                        var timer = setInterval(update, 1000);
+                    </script>
+                }
+            </div>
+
+        </a>
+
+    </div>
+</div>
