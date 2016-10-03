@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Gizbet.BLL.DTO;
 using Gizbet.BLL.Interfaces;
 using Gizbet.WEB.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 using static Gizbet.WEB.Configuration.AutoMapperConfigurationWEB;
 
 namespace Gizbet.WEB.Controllers
@@ -15,6 +16,7 @@ namespace Gizbet.WEB.Controllers
     [Authorize]
     public class LotsController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly ILotService _lotService;
         private readonly ICategoryService _categoryService;
 
@@ -22,28 +24,52 @@ namespace Gizbet.WEB.Controllers
         {
             _lotService = lotService;
             _categoryService = categoryService;
+            _mapper = GetMapper();
         }
 
         public async Task<ActionResult> Lot(int id)
         {
-            var lotModel = Mapper.Map<LotPublicModel>(await _lotService.GetAsync(id));
+            var lotModel = _mapper.Map<LotPublicModel>(await _lotService.GetAsync(id));
             if (lotModel.IsSold)
                 return View("LotSold", lotModel);
             return View(lotModel);
         }
 
-        public async Task<ActionResult> Add()
+        [HttpPost]
+        public async Task<PartialViewResult> SearchResult(string request, int? page)
         {
-            ViewBag.Categories = Mapper.Map<List<CategoryModel>>(await _categoryService.GetAllAsync());
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            request = request ?? "";
+            var res = _mapper.Map<List<LotPublicModel>>(await _lotService.FindByAsync(x=>x.Name.Contains(request))); 
+            return PartialView(res.Where(x=>!x.IsSold).ToPagedList(pageNumber, pageSize));
+        }
+
+        public ActionResult Search()
+        {
             return View();
         }
 
+        public async Task<ActionResult> Add()
+        {
+            ViewBag.Categories = _mapper.Map<List<CategoryModel>>(await _categoryService.GetAllAsync());
+            return View();
+        }
+
+        public async Task<ActionResult> Reply(int id)
+        {
+            ViewBag.Categories = _mapper.Map<List<CategoryModel>>(await _categoryService.GetAllAsync());
+            var lot = await _lotService.GetAsync(id);
+            return View("Add", _mapper.Map<LotAddModel>(lot));
+        }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(LotAddModel lotModel)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Categories = Mapper.Map<List<CategoryModel>>(await _categoryService.GetAllAsync());
+                ViewBag.Categories = _mapper.Map<List<CategoryModel>>(await _categoryService.GetAllAsync());
                 return View(lotModel);
             }
 
@@ -55,7 +81,7 @@ namespace Gizbet.WEB.Controllers
                 lotModel.UploadImage.SaveAs(Server.MapPath("~/Content/Images/UserImages/" + fileName));
             }
 
-            var lot = Mapper.Map<LotDTO>(lotModel);
+            var lot = _mapper.Map<LotDTO>(lotModel);
 
             lot.OwnerId = int.Parse(User.Identity.GetUserId());
             lot.TimeOfPosting = DateTime.Now;

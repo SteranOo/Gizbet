@@ -1,0 +1,17 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Gizbet.WEB.Models.LotPublicModel>
+
+<div id="lots">
+
+    <div class="row">
+        @foreach (var lot in Model)
+        {
+            @Html.Partial("ShortLotInfo", lot)
+        }
+    </div>
+
+    <div>
+        Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("SearchResult", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "lots" }))
+    </div>
+</div>

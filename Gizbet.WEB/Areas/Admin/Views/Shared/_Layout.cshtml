@@ -26,13 +26,14 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Лоты", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Категории", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Пользователи", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Лоты", "Index", "Lots")</li>
+                    <li>@Html.ActionLink("Категории", "Index", "Categories")</li>
+                    <li>@Html.ActionLink("Пользователи", "Index", "Users")</li>
+                    <li>@Html.ActionLink("На сайт", "Index", "Home", new { Area = "" }, null)</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a><span class="glyphicon glyphicon-user"></span> @User.Identity.Name</a></li>
-                    <li><a href="@Url.Action("Logout", "Account")"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
+                    <li><a href="@Url.Action("Logout", "Account", new {Area = ""})"><span class="glyphicon glyphicon-log-out"></span> Выход</a></li>
                 </ul>
             </div>
         </div>
@@ -58,6 +59,7 @@
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", false)
 </body>

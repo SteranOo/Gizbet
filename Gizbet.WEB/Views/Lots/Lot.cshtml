@@ -27,7 +27,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Owner.UserName)
+            @Html.ActionLink(Model.Owner.UserName, "ProfilePage", "Account", new { userName = Model.Owner.UserName }, null)
         </dd>
 
         <dt>
@@ -120,7 +120,6 @@
 
             @if (Model.IsSelling)
             {
-
                 <form method="post" action="@Url.Action("Buy", new {lotId = Model.Id})">
                     <input type="submit" style="font-size: 16px" class="btn btn-info" value="Выкупить &#8372;@Html.DisplayFor(model => model.SellingPrice)"/>
                 </form>
@@ -179,27 +178,4 @@
             update();
             var timer = setInterval(update, 1000);
 </script>
-
-    @*<script>
-          $( function() {
-            $( "#dialog-confirm" ).dialog({
-                resizable: false,
-                height: "auto",
-                width: 400,
-                modal: true,
-                buttons: {
-                    "Delete all items": function() {
-                        $( this ).dialog( "close" );
-                    },
-                    Cancel: function() {
-                        $( this ).dialog( "close" );
-                    }
-                }
-            });
-        } );
-    </script>
-
-    <div id="dialog-confirm" title="Empty the recycle bin?">
-        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
-    </div>*@
 }

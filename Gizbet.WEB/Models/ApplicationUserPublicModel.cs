@@ -6,6 +6,8 @@ namespace Gizbet.WEB.Models
 {
     public class ApplicationUserPublicModel
     {
+        public int Id { get; set; }
+
         [Display(Name = "Логин")]
         public string UserName { get; set; }
 
@@ -28,6 +30,10 @@ namespace Gizbet.WEB.Models
         [Display(Name = "Дата рождения")]
         public DateTime DateOfBirth { get; set; }
 
+        public bool IsBanned { get; set; }
+
         public ICollection<LotPublicModel> Lots { get; set; }
+
+        public ICollection<BidModel> Bids { get; set; }
     }
 }

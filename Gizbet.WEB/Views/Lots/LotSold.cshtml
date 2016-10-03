@@ -78,7 +78,7 @@
     <div>
         @if (Model.TopBid == null)
         {
-            <div class="alert alert-warning"> Лот не продан</div>
+            <div class="alert alert-warning"> Лот не продан @Html.ActionLink("Повторить", "Reply", new {id = Model.Id})</div>
         }
         else
         {

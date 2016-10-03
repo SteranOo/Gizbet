@@ -29,6 +29,8 @@ namespace Gizbet.BLL.DTO
 
         public bool PhoneNumberConfirmed { get; set; }
 
+        public bool LockoutEnabled { get; set; }
+
         public DateTime? LockoutEndDateUtc { get; set; }
 
         public bool TwoFactorEnabled { get; set; }

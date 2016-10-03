@@ -64,7 +64,7 @@
     <Compile Include="DTO\LotDTO.cs" />
     <Compile Include="DTO\ResponseDTO.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
-    <Compile Include="Infrastructure\ValidationException.cs" />
+    <Compile Include="Infrastructure\GizbetBLLException.cs" />
     <Compile Include="Interfaces\IBidService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\ILotService.cs" />

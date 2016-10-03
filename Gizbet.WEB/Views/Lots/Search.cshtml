@@ -1,0 +1,10 @@
+﻿@using (Ajax.BeginForm("SearchResult", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div class="col-lg-11">
+        <input type="text" id="search" name="request" class="form-control" placeholder="Введите название лота" />
+    </div>
+    <input type="submit" value="Поиск" class="btn btn-success" />
+}
+<div id="results" style="margin-top: 20px"></div>
+
+

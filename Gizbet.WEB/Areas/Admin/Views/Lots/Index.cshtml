@@ -1,0 +1,28 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Gizbet.WEB.Models.LotPublicModel>
+
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">Лоты</h3></div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "Lot", "Lots", new {Area = "", id = item.Id}, null)
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id}, new {style = "color: red"})
+            </td>
+        </tr>
+    }
+
+</table>
+
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))

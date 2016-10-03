@@ -28,7 +28,12 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Поиск", "Search", "Lots")</li>
                     <li>@Html.ActionLink("Помощь", "About", "Home")</li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li>@Html.ActionLink("Панель администратора", "Index", "Home", new { Area = "Admin" }, null)</li>
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
 
@@ -40,7 +45,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="@Url.Action("ProfilePage", "Account")">Профиль</a></li>
                             <li><a href="@Url.Action("Lots", "Account")">Мои лоты</a></li>
-                            <li><a href="#">Мои ставки</a></li>
+                            <li><a href="@Url.Action("Bids", "Account")">Мои ставки</a></li>
                             <li><a href="@Url.Action("Add", "Lots")">Добавить лот</a></li>
                         </ul>
                     </li>

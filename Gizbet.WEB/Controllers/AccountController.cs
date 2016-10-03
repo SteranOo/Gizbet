@@ -1,24 +1,30 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Gizbet.BLL.DTO;
 using Gizbet.BLL.Infrastructure;
 using Gizbet.BLL.Interfaces;
 using static Gizbet.WEB.Configuration.AutoMapperConfigurationWEB;
 using Gizbet.WEB.Models;
 using Microsoft.Owin.Security;
+using PagedList;
 
 namespace Gizbet.WEB.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly IMapper _mapper;
         private readonly IUserService _userService;      
 
         public AccountController(IUserService userService)
         {
             _userService = userService;
+            _mapper = GetMapper();
         }
 
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
@@ -45,6 +51,11 @@ namespace Gizbet.WEB.Controllers
                 else
                 {
                     AuthenticationManager.SignOut();
+                    if (await _userService.IsBannedAsync(model.UserName))
+                    {
+                        ModelState.AddModelError("", "Данный пользователь временно заблокирован");
+                         return View(model);
+                    }
                     AuthenticationManager.SignIn(new AuthenticationProperties
                     {
                         IsPersistent = true
@@ -74,7 +85,7 @@ namespace Gizbet.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUserDTO userDto = Mapper.Map<ApplicationUserDTO>(model);
+                ApplicationUserDTO userDto = _mapper.Map<ApplicationUserDTO>(model);
                 userDto.Role = "User";
 
                 OperationDetails operationDetails = await _userService.CreateAsync(userDto);
@@ -91,14 +102,25 @@ namespace Gizbet.WEB.Controllers
             if (userName == null)
                 userName = User.Identity.Name;
 
-            var user = Mapper.Map<ApplicationUserPublicModel>(await _userService.GetUserByUserNameAsync(userName));
+            var user = _mapper.Map<ApplicationUserPublicModel>(await _userService.GetUserByUserNameAsync(userName));
             return View(user);
         }
 
-        public async Task<ActionResult> Lots()
+        public async Task<ActionResult> Lots(int? page)
         {
-            var user = Mapper.Map<ApplicationUserPublicModel>(await _userService.GetUserByUserNameAsync(User.Identity.Name));
-            return View(user);
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            var user = _mapper.Map<ApplicationUserPublicModel>(await _userService.GetUserByUserNameAsync(User.Identity.Name));
+            return View(user.Lots.ToPagedList(pageNumber, pageSize));
+        }
+
+        public async Task<ActionResult> Bids(int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            var user = _mapper.Map<ApplicationUserPublicModel>(await _userService.GetUserByUserNameAsync(User.Identity.Name));
+            var bids = _mapper.Map<List<BidModel>>(user.Bids.OrderByDescending(b => b.TimeOfBid));
+            return View(bids.ToPagedList(pageNumber, pageSize));
         }
     }
 }

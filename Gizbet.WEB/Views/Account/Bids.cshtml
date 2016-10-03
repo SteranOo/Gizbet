@@ -1,0 +1,46 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Gizbet.WEB.Models.BidModel>
+
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">Ставки</h3></div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TimeOfBid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Lot)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOfBid)
+            </td>
+            <td>
+                @Html.ActionLink(item.Lot.Name, "Lot", "Lots", new {id = item.Lot.Id}, null)
+            </td>
+            @if (!item.IsTop)
+            {
+                <td style="color: red">Ставка перебита</td>
+            }
+            @if (item.IsWin)
+            {
+                <td style="color: green">Вы победили</td>
+            }
+        </tr>
+    }
+
+</table>
+
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Category", new { page }))

@@ -43,15 +43,7 @@ namespace Gizbet.DAL.Repositories
 
         public async Task SaveAsync()
         {
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
-            
+            await _dbContext.SaveChangesAsync();
         }
 
         public void Dispose()

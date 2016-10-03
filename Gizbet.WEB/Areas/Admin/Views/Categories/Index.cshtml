@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Gizbet.WEB.Models.CategoryModel>
+
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">Категории</h3></div>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayName("Количество лотов")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayName(item.Lots.Count.ToString())
+            </td>
+            <td>
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id}, new {style = "color: red"})
+            </td>
+        </tr>
+    }
+</table>
+
+<div align="center">
+    <button id="button_add" class="btn btn-success">Добавить <span class="glyphicon glyphicon-plus"></span></button>
+</div>
+
+<div id="dialog_add" title="Добавление категории" hidden="hidden">
+    <form action="@Url.Action("Add")" method="post">
+        <label>Название:</label>
+        <input name="name" type="text">
+        <input class="btn btn-success" type="submit" value="Добавить" style="margin-left: 90px; margin-top: 5px">
+    </form>
+</div>
+
+@section scripts 
+{
+    <script>
+        $(document)
+            .ready(function() {
+                $(function() {
+                    $("#dialog_add")
+                        .dialog({
+                            autoOpen: false,
+                            show: {
+                                effect: "blind",
+                                duration: 1000
+                            },
+                            hide: {
+                                effect: "blind",
+                                duration: 1000
+                            }
+                        });
+                    $("#button_add")
+                        .on("click",
+                            function() {
+                                $("#dialog_add").dialog("open");
+                            });
+                });
+            });
+    </script>
+}

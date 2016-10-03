@@ -7,7 +7,6 @@ namespace Gizbet.BLL.Services
     public class GeneralService : IService
     {
         private bool _isDisposed;
-
         protected IUnitOfWork _unitOfWork;
 
         public GeneralService(IUnitOfWork unitOfWork)

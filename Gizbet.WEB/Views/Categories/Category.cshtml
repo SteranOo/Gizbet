@@ -1,9 +1,18 @@
-﻿@model Gizbet.WEB.Models.CategoryModel
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Gizbet.WEB.Models.LotPublicModel>
 
-<div align="center" class="thumbnail"><h3 style="margin-top: 10px">@Model.Name</h3></div>
+<div align="center" class="thumbnail"><h3 style="margin-top: 10px">@ViewBag.CategoryName</h3></div>
 
-@foreach (var lot in Model.Lots.Where(l=>!l.IsSold))
-{
-    @Html.Partial("ShortLotInfo", lot)
-}
+<div class="row">
 
+    @foreach (var lot in Model)
+    {
+        @Html.Partial("ShortLotInfo", lot)
+    }
+
+</div>
+
+<div>
+    Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Category", new { page }))
+</div>
